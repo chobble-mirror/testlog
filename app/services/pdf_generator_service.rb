@@ -84,7 +84,6 @@ class PdfGeneratorService
     pdf.text inspection.comments
   end
 
-
   def self.generate_pdf_qr_code(pdf, inspection)
     pdf.move_down 20
     pdf.text "Certificate Verification", size: 14, style: :bold

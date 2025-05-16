@@ -15,10 +15,10 @@ class EquipmentController < ApplicationController
 
   def show
     @inspections = @equipment.inspections.order(inspection_date: :desc)
-    
+
     respond_to do |format|
       format.html
-      format.json { render json: { id: @equipment.id, name: @equipment.name, serial: @equipment.serial, location: @equipment.location, manufacturer: @equipment.manufacturer } }
+      format.json { render json: {id: @equipment.id, name: @equipment.name, serial: @equipment.serial, location: @equipment.location, manufacturer: @equipment.manufacturer} }
     end
   end
 

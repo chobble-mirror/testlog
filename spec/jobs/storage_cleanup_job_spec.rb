@@ -33,7 +33,7 @@ describe StorageCleanupJob do
 
     # Create a user (we no longer test with image attachments)
     user = User.create!(email: "test@example.com", password: "password123", admin: false)
-    inspection = user.inspections.create!(
+    user.inspections.create!(
       inspector: "Test Inspector",
       serial: "SN12345",
       location: "Test Location"

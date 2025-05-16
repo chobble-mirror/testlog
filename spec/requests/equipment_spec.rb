@@ -1,9 +1,9 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Equipment", type: :request do
   let(:user) { User.create!(email: "test@example.com", password: "password", password_confirmation: "password") }
   let(:equipment) { Equipment.create!(name: "Test Equipment", serial: "TEST123", location: "Test Location", manufacturer: "Test Manufacturer", user: user) }
-  
+
   # Create a user and create a session
   before do
     post "/login", params: {session: {email: user.email, password: "password"}}

@@ -41,7 +41,6 @@ Rails.application.routes.draw do
     end
   end
 
-
   # Short URL for certificates
   get "c/:id", to: "inspections#certificate", as: "short_certificate"
   get "C/:id", to: "inspections#certificate", as: "short_certificate_uppercase"
