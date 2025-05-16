@@ -35,6 +35,5 @@ RSpec.describe PdfGeneratorService do
         expect(pdf).to be_a(Prawn::Document)
       end
     end
-
   end
 end

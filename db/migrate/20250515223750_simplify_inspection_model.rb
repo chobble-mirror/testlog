@@ -13,7 +13,7 @@ class SimplifyInspectionModel < ActiveRecord::Migration[8.0]
     remove_column :inspections, :equipment_power
     remove_column :inspections, :load_test
     remove_column :inspections, :rcd_trip_time
-    
+
     # Keep: serial, location, comments, inspection_date, reinspection_date, passed, pdf_last_accessed_at, inspector, manufacturer
   end
 end

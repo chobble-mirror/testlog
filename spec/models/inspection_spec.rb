@@ -159,7 +159,6 @@ RSpec.describe Inspection, type: :model do
     end
   end
 
-
   describe "search functionality" do
     before do
       # Create test records for search
