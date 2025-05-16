@@ -1,0 +1,67 @@
+<article class="view-equipment">
+  <header><h2>Equipment Details</h2></header>
+  <table>
+    <tr>
+      <th>Name:</th>
+      <td><%= @equipment.name %></td>
+    </tr>
+    <tr>
+      <th>Manufacturer:</th>
+      <td><%= @equipment.manufacturer %></td>
+    </tr>
+    <tr>
+      <th>Serial Number / Asset ID:</th>
+      <td><%= @equipment.serial %></td>
+    </tr>
+    <tr>
+      <th>Location:</th>
+      <td><%= @equipment.location %></td>
+    </tr>
+  </table>
+
+  <h4>Actions</h4>
+  <div class="actions">
+    <%= link_to "Edit Equipment", edit_equipment_path(@equipment), class: "button" %>
+    <%= link_to "Delete Equipment", @equipment, class: "button danger", data: { turbo_method: :delete, turbo_confirm: "Are you sure? This cannot be undone." } %>
+  </div>
+
+  <h4>Inspection History</h4>
+  <% if @inspections.any? %>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Inspection Date</th>
+          <th>Inspector</th>
+          <th>Next Due</th>
+          <th>Result</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @inspections.each do |inspection| %>
+          <tr>
+            <td><%= inspection.inspection_date&.strftime('%d/%m/%Y') %></td>
+            <td><%= inspection.inspector %></td>
+            <td><%= inspection.reinspection_date&.strftime('%d/%m/%Y') %></td>
+            <td>
+              <% if inspection.passed %>
+                <mark>PASS</mark>
+              <% else %>
+                <mark style="background-color:#f2dede;color:#a94442;">FAIL</mark>
+              <% end %>
+            </td>
+            <td class="actions">
+              <%= link_to "View", inspection, class: "button small" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No inspections recorded for this equipment.</p>
+  <% end %>
+
+  <div class="actions">
+    <%= link_to "Add Inspection", new_inspection_path, class: "button" %>
+  </div>
+</article>

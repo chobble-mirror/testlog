@@ -1,0 +1,51 @@
+<header>
+  <h1><%= @title || "Equipment" %></h1>
+</header>
+
+<div class="center">
+  <%= link_to new_equipment_path do %>
+    <strong>Add Equipment</strong>
+  <% end %>
+</div>
+
+<section>
+  <%= render "search_form" %>
+</section>
+
+<% if @equipment.any? %>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Manufacturer</th>
+        <th>Serial Number</th>
+        <th>Location</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @equipment.each do |equipment| %>
+        <tr>
+          <td><%= link_to equipment.name, equipment %></td>
+          <td><%= equipment.manufacturer %></td>
+          <td><%= equipment.serial %></td>
+          <td><%= equipment.location %></td>
+          <td class="actions">
+            <%= link_to edit_equipment_path(equipment) do %>
+              <em>Edit</em>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div class="center">
+    <p>
+      <%= link_to equipment_index_path(format: :csv) do %>
+        <strong>Export CSV</strong>
+      <% end %>
+    </p>
+  </div>
+<% else %>
+  <p>No equipment found.</p>
+<% end %>

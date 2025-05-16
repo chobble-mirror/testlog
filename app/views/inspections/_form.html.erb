@@ -1,0 +1,61 @@
+<% if @inspection.errors.any? %>
+  <aside>
+    <h3>Did not save. Fix these <%= pluralize(@inspection.errors.count, "error") %> and try again:</h3>
+    <ul>
+    <% @inspection.errors.each do |error| %>
+      <li><%= error.full_message %></li>
+    <% end %>
+    </ul>
+  </aside>
+<% end %>
+
+<%= form_with(model: @inspection, html: {class: "inspection"}) do |form| %>
+  <fieldset>
+    <header>
+      <h3>Equipment Details</h3>
+    </header>
+
+    <%= form.label :equipment_id, "Select Existing Equipment (Optional)" %>
+    <%= form.collection_select :equipment_id, current_user.equipment.order(:name), :id, :name, {include_blank: "-- No equipment selected --"} %>
+    
+    <p><small>If equipment is selected, the fields below will be automatically populated and disabled</small></p>
+
+    <%= form.label :serial, "Serial Number / Asset ID" %>
+    <%= form.text_field :serial %>
+
+    <%= form.label :manufacturer, "Manufacturer" %>
+    <%= form.text_field :manufacturer %>
+
+    <%= form.label :location, "Location" %>
+    <%= form.text_field :location %>
+  </fieldset>
+  <fieldset>
+    <header>
+      <h3>Inspection Details</h3>
+    </header>
+
+    <%= form.label :inspection_date, "Inspection Date" %>
+    <%= form.date_field :inspection_date %>
+
+    <%= form.label :reinspection_date, "Reinspection Date" %>
+    <%= form.date_field :reinspection_date %>
+
+    <%= form.label :inspector, "Inspector Name" %>
+    <%= form.text_field :inspector %>
+  </fieldset>
+  <fieldset>
+    <header>
+      <h3>Results</h3>
+    </header>
+
+    <%= form.label :passed, "Overall Result" %>
+    <%= form.check_box :passed %>
+    <label for="inspection_passed">Pass</label>
+
+    <%= form.label :comments, "Comments" %>
+    <%= form.text_area :comments, rows: 3 %>
+  </fieldset>
+  <fieldset>
+    <%= form.submit @inspection.new_record? ? "Save Inspection" : "Update Inspection" %>
+  </fieldset>
+<% end %>

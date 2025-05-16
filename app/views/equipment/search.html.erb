@@ -1,0 +1,34 @@
+<h1>Search Results</h1>
+
+<section>
+  <%= render "search_form" %>
+</section>
+
+<p><%= @equipment.count %> equipment records found.</p>
+
+<% if @equipment.any? %>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Serial Number</th>
+        <th>Location</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @equipment.each do |equipment| %>
+        <tr>
+          <td><%= link_to equipment.name, equipment %></td>
+          <td><%= equipment.serial %></td>
+          <td><%= equipment.location %></td>
+          <td class="actions">
+            <%= link_to "Details", equipment, class: "button small" %>
+            <%= link_to "Edit", edit_equipment_path(equipment), class: "button small" %>
+            <%= link_to "Delete", equipment, class: "button small danger", data: { turbo_method: :delete, turbo_confirm: "Are you sure? This cannot be undone." } %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
