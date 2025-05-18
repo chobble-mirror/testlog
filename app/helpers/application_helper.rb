@@ -1,6 +1,6 @@
 module ApplicationHelper
   TIME_FORMATS = {
-    "day" => "%b %d, %Y",
+    "date" => "%b %d, %Y",
     "time" => "%b %d, %Y - %H:%M"
   }
 
@@ -14,7 +14,7 @@ module ApplicationHelper
   def date_for_form(datetime)
     return nil if datetime.nil?
 
-    if current_user&.time_display == "day"
+    if current_user&.time_display == "date"
       datetime.to_date
     else
       datetime
