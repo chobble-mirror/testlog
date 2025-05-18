@@ -158,9 +158,9 @@ class PdfGeneratorService
       pdf.text "Serial: #{equipment.serial}", align: :center, size: 14
       pdf.move_down 2
       if equipment.last_due_date
-        pdf.text "Next Inspection Due: #{equipment.last_due_date.strftime('%d/%m/%Y')}", 
-          align: :center, size: 14, 
-          color: equipment.last_due_date < Date.today ? "CC0000" : "000000"
+        pdf.text "Next Inspection Due: #{equipment.last_due_date.strftime("%d/%m/%Y")}",
+          align: :center, size: 14,
+          color: (equipment.last_due_date < Date.today) ? "CC0000" : "000000"
       end
     end
     pdf.move_down 20
@@ -177,7 +177,7 @@ class PdfGeneratorService
       ["Manufacturer", equipment.manufacturer.presence || "Not specified"],
       ["Location", equipment.location]
     ]
-    
+
     # Add next inspection due if available
     if equipment.last_due_date
       data << ["Next Inspection Due", equipment.last_due_date.strftime("%d/%m/%Y")]

@@ -115,7 +115,7 @@ class UsersController < ApplicationController
   def password_params
     params.require(:user).permit(:password, :password_confirmation)
   end
-  
+
   def settings_params
     params.require(:user).permit(:time_display)
   end

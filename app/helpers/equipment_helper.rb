@@ -10,7 +10,7 @@ module EquipmentHelper
       content_tag(:p, links.join(" / ").html_safe, class: "center") if links.any?
     end
   end
-  
+
   def equipment_actions(equipment)
     [
       {
