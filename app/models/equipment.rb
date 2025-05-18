@@ -20,6 +20,7 @@ class Equipment < ApplicationRecord
   def last_due_date
     inspections.order(created_at: :desc).first&.reinspection_date
   end
+
   private
 
   def generate_id
