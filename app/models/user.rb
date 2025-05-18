@@ -6,9 +6,11 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true, format: {with: URI::MailTo::EMAIL_REGEXP}
   validates :password, presence: true, length: {minimum: 6}, if: :password_digest_changed?
   validates :inspection_limit, numericality: {only_integer: true, greater_than_or_equal_to: -1}
+  validates :time_display, inclusion: {in: %w[day time]}
 
   before_create :set_default_inspection_limit
   before_create :set_admin_if_first_user
+  before_create :set_default_time_display
   before_save :downcase_email
 
   def can_create_inspection?
@@ -16,7 +18,7 @@ class User < ApplicationRecord
   end
 
   private
-  
+
   def downcase_email
     self.email = email.downcase
   end
@@ -28,5 +30,9 @@ class User < ApplicationRecord
 
   def set_admin_if_first_user
     self.admin = User.count.zero?
+  end
+
+  def set_default_time_display
+    self.time_display ||= "date"
   end
 end

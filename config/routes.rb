@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     member do
       get "change_password"
       patch "update_password"
+      get "change_settings"
+      patch "update_settings"
       post "impersonate"
     end
   end
@@ -38,11 +40,19 @@ Rails.application.routes.draw do
   resources :equipment do
     collection do
       get "search"
+      get "overdue"
+    end
+    member do
+      get "certificate"
+      get "qr_code"
     end
   end
-
 
   # Short URL for certificates
   get "c/:id", to: "inspections#certificate", as: "short_certificate"
   get "C/:id", to: "inspections#certificate", as: "short_certificate_uppercase"
+
+  # Short URL for equipment certificates
+  get "e/:id", to: "equipment#certificate", as: "short_equipment_certificate"
+  get "E/:id", to: "equipment#certificate", as: "short_equipment_certificate_uppercase"
 end

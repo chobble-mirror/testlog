@@ -18,7 +18,10 @@
     <%= form.label :equipment_id, "Select Existing Equipment (Optional)" %>
     <%= form.collection_select :equipment_id, current_user.equipment.order(:name), :id, :name, {include_blank: "-- No equipment selected --"} %>
     
-    <p><small>If equipment is selected, the fields below will be automatically populated and disabled</small></p>
+    <p><small>If equipment is selected, the serial number and manufacturer will be automatically populated and disabled, but name and location can still be edited</small></p>
+
+    <%= form.label :name, "Name" %>
+    <%= form.text_field :name %>
 
     <%= form.label :serial, "Serial Number / Asset ID" %>
     <%= form.text_field :serial %>
@@ -35,10 +38,18 @@
     </header>
 
     <%= form.label :inspection_date, "Inspection Date" %>
-    <%= form.date_field :inspection_date %>
+    <% if current_user.time_display == "day" %>
+      <%= form.date_field :inspection_date, value: date_for_form(@inspection.inspection_date) %>
+    <% else %>
+      <%= form.datetime_local_field :inspection_date, value: date_for_form(@inspection.inspection_date) %>
+    <% end %>
 
     <%= form.label :reinspection_date, "Reinspection Date" %>
-    <%= form.date_field :reinspection_date %>
+    <% if current_user.time_display == "day" %>
+      <%= form.date_field :reinspection_date, value: date_for_form(@inspection.reinspection_date) %>
+    <% else %>
+      <%= form.datetime_local_field :reinspection_date, value: date_for_form(@inspection.reinspection_date) %>
+    <% end %>
 
     <%= form.label :inspector, "Inspector Name" %>
     <%= form.text_field :inspector %>

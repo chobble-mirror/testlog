@@ -14,6 +14,18 @@ class Inspection < ApplicationRecord
     where("reinspection_date < ?", Date.today)
   end
 
+  def name
+    equipment&.name || super
+  end
+
+  def serial
+    equipment&.serial || super
+  end
+
+  def manufacturer
+    equipment&.manufacturer || super
+  end
+
   private
 
   def generate_id

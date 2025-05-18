@@ -41,7 +41,7 @@ describe "storage:cleanup rake task" do
 
     # Create a user without attaching an image, since we removed image functionality
     user = User.create!(email: "test@example.com", password: "password123", admin: false)
-    inspection = user.inspections.create!(
+    user.inspections.create!(
       inspector: "Test Inspector",
       serial: "SN12345",
       location: "Test Location"

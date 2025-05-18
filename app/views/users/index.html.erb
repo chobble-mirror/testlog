@@ -1,6 +1,6 @@
 <article class="users">
   <header><h1>Users</h1></header>
-  <table>
+  <%= scrollable_table do %>
     <thead>
       <tr>
         <th>Email</th>
@@ -29,10 +29,10 @@
         </tr>
       <% end %>
     </tbody>
-  </table>
+  <% end %>
   <hr>
   <h2>Background Jobs</h2>
-  <table>
+  <%= scrollable_table do %>
    <thead>
       <tr>
         <th>Job</th>
@@ -49,5 +49,5 @@
         </tr>
       <% end %>
     </tbody>
-  </table>
+  <% end %>
 </article>

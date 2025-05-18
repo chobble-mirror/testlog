@@ -1,6 +1,6 @@
 class EquipmentController < ApplicationController
-  before_action :set_equipment, only: [:show, :edit, :update, :destroy]
-  before_action :check_equipment_owner, only: [:show, :edit, :update, :destroy]
+  before_action :set_equipment, only: [:show, :edit, :update, :destroy, :certificate, :qr_code]
+  before_action :check_equipment_owner, only: [:show, :edit, :update, :destroy, :certificate, :qr_code]
   before_action :no_index
 
   def index
@@ -15,10 +15,10 @@ class EquipmentController < ApplicationController
 
   def show
     @inspections = @equipment.inspections.order(inspection_date: :desc)
-    
+
     respond_to do |format|
       format.html
-      format.json { render json: { id: @equipment.id, name: @equipment.name, serial: @equipment.serial, location: @equipment.location, manufacturer: @equipment.manufacturer } }
+      format.json { render json: {id: @equipment.id, name: @equipment.name, serial: @equipment.serial, location: @equipment.location, manufacturer: @equipment.manufacturer} }
     end
   end
 
@@ -59,6 +59,30 @@ class EquipmentController < ApplicationController
     @equipment = params[:query].present? ?
       current_user.equipment.search(params[:query]) :
       current_user.equipment
+  end
+
+  def overdue
+    @equipment = current_user.equipment.overdue.order(created_at: :desc)
+    @title = "Overdue Equipment"
+    render :index
+  end
+
+  def certificate
+    pdf_data = PdfGeneratorService.generate_equipment_certificate(@equipment)
+
+    send_data pdf_data.render,
+      filename: "Equipment_History_#{@equipment.serial}.pdf",
+      type: "application/pdf",
+      disposition: "inline"
+  end
+
+  def qr_code
+    qr_code_png = QrCodeService.generate_qr_code(@equipment)
+
+    send_data qr_code_png,
+      filename: "Equipment_History_QR_#{@equipment.serial}.png",
+      type: "image/png",
+      disposition: "inline"
   end
 
   private

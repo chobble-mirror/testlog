@@ -1,6 +1,7 @@
-<table class="inspections">
+<%= scrollable_table(class: "inspections") do %>
   <thead>
     <tr>
+      <th>Name</th>
       <th>Serial</th>
       <th>Location</th>
       <th>Last Inspection</th>
@@ -13,22 +14,16 @@
     <% inspections.each do |inspection| %>
       <tr>
         <td>
-          <%= link_to inspection.serial, inspection_path(inspection) %>
+          <%= link_to inspection.name.presence || "Unnamed", inspection_path(inspection) %>
+        </td>
+        <td>
+          <%= link_to inspection.serial.presence || "Missing", inspection_path(inspection) %>
         </td>
         <td><%= inspection.location %></td>
-        <td><%= inspection.inspection_date&.strftime('%d/%m/%Y') %></td>
-        <td><%= inspection.reinspection_date&.strftime('%d/%m/%Y') %></td>
-        <td>
-          <% if inspection.passed %>
-            <mark>PASS</mark>
-          <% else %>
-            <mark style="background-color:#f2dede;color:#a94442;">FAIL</mark>
-          <% end %>
-        </td>
-        <td>
-          <%= link_to edit_inspection_path(inspection) do %><em>Edit</em><% end %>
-        </td>
+        <td><%= render_time(inspection.inspection_date) %></td>
+        <td><%= render_time(inspection.reinspection_date) %></td>
+        <td><%= inspection_result_badge(inspection) %></td>
       </tr>
     <% end %>
   </tbody>
-</table>
+<% end %>

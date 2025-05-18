@@ -1,10 +1,32 @@
 class QrCodeService
-  def self.generate_qr_code(inspection)
+  def self.generate_qr_code(record)
     require "rqrcode"
 
     # Create QR code for the certificate URL using the shorter format
-    url = "#{ENV["BASE_URL"]}/c/#{inspection.id}"
+    if record.is_a?(Inspection)
+      generate_inspection_qr_code(record)
+    elsif record.is_a?(Equipment)
+      generate_equipment_qr_code(record)
+    else
+      raise ArgumentError, "Unsupported record type: #{record.class}"
+    end
+  end
 
+  def self.generate_inspection_qr_code(inspection)
+    require "rqrcode"
+
+    url = "#{ENV["BASE_URL"]}/c/#{inspection.id}"
+    generate_qr_code_from_url(url)
+  end
+
+  def self.generate_equipment_qr_code(equipment)
+    require "rqrcode"
+
+    url = "#{ENV["BASE_URL"]}/e/#{equipment.id}"
+    generate_qr_code_from_url(url)
+  end
+
+  def self.generate_qr_code_from_url(url)
     # Upper case characters take less QR code space (!?!)
     url.upcase!
 

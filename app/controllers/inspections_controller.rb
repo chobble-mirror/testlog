@@ -32,6 +32,7 @@ class InspectionsController < ApplicationController
       equipment = current_user.equipment.find_by(id: params[:equipment_id])
       if equipment
         @inspection.equipment_id = equipment.id
+        @inspection.name = equipment.name
         @inspection.serial = equipment.serial
         @inspection.location = equipment.location
         @inspection.manufacturer = equipment.manufacturer
@@ -59,6 +60,7 @@ class InspectionsController < ApplicationController
       end
 
       # Set values from equipment if it exists
+      params[:name] = equipment.name
       params[:serial] = equipment.serial
       params[:location] = equipment.location
       params[:manufacturer] = equipment.manufacturer
@@ -94,6 +96,7 @@ class InspectionsController < ApplicationController
       end
 
       # Set values from equipment
+      params[:name] = equipment.name
       params[:serial] = equipment.serial
       params[:location] = equipment.location
       params[:manufacturer] = equipment.manufacturer
@@ -124,7 +127,7 @@ class InspectionsController < ApplicationController
   end
 
   def certificate
-    pdf_data = PdfGeneratorService.generate_certificate(@inspection)
+    pdf_data = PdfGeneratorService.generate_inspection_certificate(@inspection)
 
     @inspection.update(pdf_last_accessed_at: Time.current)
 
@@ -147,7 +150,7 @@ class InspectionsController < ApplicationController
 
   def inspection_params
     params.require(:inspection).permit(
-      :inspection_date, :reinspection_date, :inspector, :serial,
+      :inspection_date, :reinspection_date, :inspector, :serial, :name,
       :location, :passed, :comments, :manufacturer, :equipment_id
     )
   end
@@ -178,7 +181,7 @@ class InspectionsController < ApplicationController
   end
 
   def inspections_to_csv
-    attributes = %w[id serial inspection_date reinspection_date inspector location passed comments manufacturer]
+    attributes = %w[id name serial inspection_date reinspection_date inspector location passed comments manufacturer]
 
     CSV.generate(headers: true) do |csv|
       csv << attributes

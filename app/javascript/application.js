@@ -6,6 +6,7 @@ document.addEventListener("turbo:load", function() {
   const equipmentSelect = document.querySelector('select[name="inspection[equipment_id]"]');
   if (equipmentSelect) {
     // Fields that will be populated from equipment
+    const nameField = document.querySelector('input[name="inspection[name]"]');
     const serialField = document.querySelector('input[name="inspection[serial]"]');
     const locationField = document.querySelector('input[name="inspection[location]"]');
     const manufacturerField = document.querySelector('input[name="inspection[manufacturer]"]');
@@ -14,13 +15,12 @@ document.addEventListener("turbo:load", function() {
     const toggleFieldState = (selectedId) => {
       const hasEquipment = !!selectedId;
       
-      // Disable/enable fields
+      // Disable/enable fields - name and location remain editable
       serialField.disabled = hasEquipment;
-      locationField.disabled = hasEquipment;
       manufacturerField.disabled = hasEquipment;
       
       // Add/remove visual indication
-      [serialField, locationField, manufacturerField].forEach(field => {
+      [serialField, manufacturerField].forEach(field => {
         if (hasEquipment) {
           field.classList.add('equipment-controlled');
         } else {
@@ -42,6 +42,7 @@ document.addEventListener("turbo:load", function() {
           .then(response => response.json())
           .then(data => {
             // Populate form fields with equipment data
+            nameField.value = data.name || '';
             serialField.value = data.serial || '';
             locationField.value = data.location || '';
             manufacturerField.value = data.manufacturer || '';
@@ -53,7 +54,7 @@ document.addEventListener("turbo:load", function() {
       } else {
         // Clear fields if no equipment selected
         serialField.value = '';
-        locationField.value = '';
+        // Not clearing location field so user can keep it when changing equipment
         manufacturerField.value = '';
         
         // Update field state

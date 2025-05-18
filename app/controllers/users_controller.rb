@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
   skip_before_action :require_login, only: [:new, :create]
   before_action :require_admin, only: [:index, :edit, :update, :destroy, :impersonate]
-  before_action :set_user, only: [:edit, :update, :destroy, :change_password, :update_password, :impersonate]
-  before_action :require_correct_user, only: [:change_password, :update_password]
+  before_action :set_user, only: [:edit, :update, :destroy, :change_password, :update_password, :change_settings, :update_settings, :impersonate]
+  before_action :require_correct_user, only: [:change_password, :update_password, :change_settings, :update_settings]
 
   def index
     @users = User.includes(:inspections).all
@@ -76,6 +76,18 @@ class UsersController < ApplicationController
     redirect_to root_path
   end
 
+  def change_settings
+  end
+
+  def update_settings
+    if @user.update(settings_params)
+      flash[:success] = "Settings updated"
+      redirect_to root_path
+    else
+      render :change_settings, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def set_user
@@ -94,12 +106,17 @@ class UsersController < ApplicationController
 
   def require_correct_user
     unless current_user == @user
-      flash[:danger] = "You can only change your own password"
+      action = action_name.include?("password") ? "password" : "settings"
+      flash[:danger] = "You can only change your own #{action}"
       redirect_to root_path
     end
   end
 
   def password_params
     params.require(:user).permit(:password, :password_confirmation)
+  end
+  
+  def settings_params
+    params.require(:user).permit(:time_display)
   end
 end

@@ -8,37 +8,14 @@
   <% end %>
 </div>
 
+<%= equipment_links(current_user) %>
+
 <section>
   <%= render "search_form" %>
 </section>
 
 <% if @equipment.any? %>
-  <table class="data-table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Manufacturer</th>
-        <th>Serial Number</th>
-        <th>Location</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @equipment.each do |equipment| %>
-        <tr>
-          <td><%= link_to equipment.name, equipment %></td>
-          <td><%= equipment.manufacturer %></td>
-          <td><%= equipment.serial %></td>
-          <td><%= equipment.location %></td>
-          <td class="actions">
-            <%= link_to edit_equipment_path(equipment) do %>
-              <em>Edit</em>
-            <% end %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <%= render 'equipment_table', equipment: @equipment %>
   <div class="center">
     <p>
       <%= link_to equipment_index_path(format: :csv) do %>
